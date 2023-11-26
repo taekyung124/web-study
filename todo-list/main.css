@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+body {
+  background-color: black!important;
+}
+#container {
+  width: 500px;
+  height: 500px;
+  margin-top: 300px;
+  border-radius: 20px;
+  text-align: center;
+}
+#title {
+  color: white;
+  font-weight: 600;
+}
+.line {
+  width: 80%;
+  height: 2px;
+  margin: 0 auto;
+  background-color: #e9e9e9;
+}
+
+#sub-container {
+  width: 100%;
+  height: 300px;
+  margin-top: 40px;
+  background-color: white;
+  border: 4px solid #999;
+  border-radius: 20px;
+}
+#toDoList {
+  margin-top: 20px;
+}
+#toDoList .list-group-item {
+  border-top: none!important;
+  border-bottom: 1px solid #e9e9e9!important;
+  font-weight: 600!important;
+}
+#toDoList .list-group-item .badge-pill {
+  cursor: pointer;
+}
+
+#input-group {
+  margin-top: 20px;
+  border-radius: 10px;
+  border: 4px solid #999!important;
+}
+
+#input-area {
+  border-top-left-radius: 5px!important;
+  border-bottom-left-radius: 5px!important;
+}
+#btn-area {
+  border-top-right-radius: 5px!important;
+  border-bottom-right-radius: 5px!important;
+}
