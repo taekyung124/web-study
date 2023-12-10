@@ -21,7 +21,7 @@
 
 04. bootstrap
 https://getbootstrap.com/docs/4.6/getting-started/introduction/
-
+git add
 - layout, components, utilities 다양한 레퍼런스 참고
 - class 이름은 이미 Bootstrap에서 정한 다음 스타일을 제공해주고 있기 때문에, 최대한 class이름은 피해서 id 이름으로 스타일을 지정해줄 것!
 - 스타일 작업 시 class 선택자를 사용해야할 경우 !important 를 지정 하여 준다.
