@@ -1,0 +1,31 @@
+@charset "utf-8";
+body {
+  background-color: #050713!important;
+}
+
+/* nav */
+#header {
+  background-color: #161a33!important;
+}
+.text {
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 4px;
+  font-weight: 600;
+  vertical-align: top;
+}
+
+/* container */
+#jumbotron {
+  margin-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+#btn-start {
+  margin-top: 20px;
+}
+#btn-review {
+  width: 100%;
+  margin-top: 12px;
+}

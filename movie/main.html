@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- main.css -->
+  <link rel="stylesheet" href="./main.css">
+  <!-- main.js -->
+  <link rel="js" href="./main.js">
+
+  <title>간편 영화 후기</title>
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+  
+  <!-- web fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- 3.5.1 jquery.min.js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+  <!-- Image and text -->
+  <nav class="navbar navbar-dark bg-dark" id="header">
+    <a class="navbar-brand" href="#">
+      <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" width="50" height="50" class="d-inline-block align-top" alt="로고이미지">
+      <span class="text">간편 영화 후기</span>
+    </a>
+  </nav>
+
+  <!-- container -->
+  <div class="container">
+    <!-- jumbotron -->
+    <div class="jumbotron" id="jumbotron">
+      <h3 class="display-5">최대 히트작과 최고의 스토리가 모두 모인 곳</h3>
+      <p class="lead">어디서나 다양한 디바이스에서 시청하세요. 해지는 언제든 가능합니다.</p>
+      <hr class="my-4">
+      <p>
+        TheMovieDB라는 아주 훌륭한 무료 영화 데이터베이스 플랫폼 API를 사용하여 영화정보를 가져왔습니다.
+        <br>각종 영화와 시리즈를 스트리밍하시고 자유롭게 후기를 남겨주세요.
+      </p>
+      <a href="https://www.themoviedb.org/" class="btn btn-danger btn-lg" id="btn-start" role="button" target="_blank">TheMovieDB 키 발급받기</a>
+    </div>
+    <!-- // jumbotron -->
+
+    <!-- movie-list -->
+    <div class="row row-cols-1 row-cols-md-3" id="movie-list">
+      <div class="col mb-4">
+        <div class="card">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <button type="button" class="btn btn-success btn-md" id="btn-review" onclick="openModal()">리뷰보기</button>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // movie-list -->
+
+    <!-- modal -->
+    <div class="modal" tabindex="-1" id="reviewModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // modal -->
+  </div>
+  <!-- // container -->
+
+  <script>
+
+    
+    //영화 DB - ajax
+    $.ajax({
+      url:"https://api.themoviedb.org/3/movie/popular?api_key=ec561ea0605449a6939bad34280a3696&page=1",
+      data:{"key":"value"},
+      type:"GET",
+      success:function(json){
+        console.log(json);
+        $("#movie-list").html('');
+        let movie_list = json.results;
+        
+        //movie_list 배열 수 만큼만 구조 추가
+        for(let i=0; i<movie_list.length; i++){
+          let card =`<div class="col mb-4">
+          <div class="card">
+            <img src="${'https://image.tmdb.org/t/p/w500'+movie_list[i].poster_path}" class="card-img-top" alt="영화 이미지">
+            <div class="card-body">
+              <h5 class="card-title">${movie_list[i].original_title}</h5>
+              <button type="button" class="btn btn-success btn-md" id="${movie_list[i].id}" onclick="openModal()">리뷰보기</button>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+          </div>
+        </div>`
+
+        $("#movie-list").append(card);
+        }
+
+      },
+      error: function(err){
+
+      }
+    });
+    //리뷰MODAL - ajax
+    function reviewModal(id){
+       // 리뷰 모달 열고 닫기 기능
+      var myModal = $("#reviewModal");
+
+      function openModal(){
+        myModal.addClass("is-active").fadeIn(100);
+      }
+
+      function closeModal(){
+        myModal.removeClass("is-active").fadeOut(100);
+      }
+
+    }
+  </script>
+</body>
+</html>

@@ -42,21 +42,82 @@ git add
 
 02. todo 리스트에 등록하기 기능
 - 등록하기 기능 추가 전, 등록 버튼에 onclick 이벤트 함수명을 먼저 부여한다. 
->> onclick="addTodo"
+> onclick="addTodo"
 - addTodo 함수 내에서 사용자가 입력하는 인풋 값(value)를 변수로 지정한다. 
->> let todo =  $("#input-area").val();
+> let todo =  $("#input-area").val();
 - 등록(버튼 클릭 이벤트)이 발생할 때 마다 추가될 value값이 포함된 li 구조를 변수로 지정한다. 
->> let list_item = `<li구조 시작>${인풋 value값 변수명}</li구조 끝>`
+> let list_item = `<li구조 시작>${인풋 value값 변수명}</li구조 끝>`
 - 그 구조를 ul 아래에 추가할 수 있도록 실행문을 작성한다.
->> $("#todoList").append(list_item);
+> $("#todoList").append(list_item);
 
 03. todo 리스트에 삭제하기 기능
 - 삭제하기 기능 추가 전, 삭제 구조에 onclick 이벤트 함수명을 먼저 부여한다.
->> onclick="deleteTodo()"
+> onclick="deleteTodo()"
 - 삭제하기 버튼과 삭제하는 대상을 연결하기 위해 랜덤 id를 생성하여, li와 span(삭제)에 지정해준다.
->> 랜덤 id 생성 >  let id = Math.floor(Math.random() * 100);
->> 랜덤 id와 동일한 클래스 생성 > let list_item =  `<li구조 시작>${인풋 value값 변수명} <span class="badge badge-danger badge-pill" onclick="deleteTodo(${id})">삭제</span></li구조 끝`
->> 삭제 구조에 아이디 연결 및 해당 li 구조 찾아서 삭제하는 실행문 작성 > function deleteTodo (id){
+> 랜덤 id 생성 >  let id = Math.floor(Math.random() * 100);
+> 랜덤 id와 동일한 클래스 생성 > let list_item =  `<li구조 시작>${인풋 value값 변수명} <span class="badge badge-danger badge-pill" onclick="deleteTodo(${id})">삭제</span></li구조 끝`
+> 삭제 구조에 아이디 연결 및 해당 li 구조 찾아서 삭제하는 실행문 작성 > function deleteTodo (id){
     $(".list-"+id).remove();
   }
 
+[231217] STUDY
+01. 영화 데이터 API 연결
+- themoviedb 사이트 로그인 > 설정 > API - https://www.themoviedb.org/settings/api 들어가기
+- 영화 데이터 API 발급받기
+- 페이지 1에 있는 영화 데이터만 연결 - https://api.themoviedb.org/3/movie/popular?api_key=[발급받은 데이터 API]&page=1
+- json 파일 내 results 값 movie-list 로 변수 선언 - let movie_list = json.results;
+
+- 소스 코드//영화 DB - ajax
+>  $.ajax({
+>    url:"https://api.themoviedb.org/3/movie/popular?api_key=ec561ea0605449a6939bad34280a3696&page=1",
+>    data:{"key":"value"},
+>    type:"GET",
+>    success:function(json){
+>      console.log(json);
+>      let movie_list = json.results;
+>    },
+>    error: function(err){
+>    }
+>  });
+
+02. 불러온 영화 데이터 배열 수 만큼 movie-list 구조 추가
+- html 에 영화 리스트 #movie-list 내 카드 구조를 영화 데이터 배열 수 만큼 추가하기
+> 반복문 및 구조 추가 소스 코드
+>  for(let i=0; i<movie_list.length; i++){
+>    let card =`<div class="col mb-4">
+>    <div class="card">
+>      <img src="..." class="card-img-top" alt="영화 이미지">
+>      <div class="card-body">
+>        <h5 class="card-title">Movie Title</h5>
+>        <button type="button" class="btn btn-success btn-md" id="btn-review" onclick="openModal()">리뷰보기</button>
+>      </div>
+>      <div class="card-footer">
+>        <small class="text-muted">Last updated 3 mins ago</small>
+>      </div>
+>    </div>
+>  </div>`
+>  
+>  $("#movie-list").append(card);
+>  }
+
+
+03. movie-list 구조에 영화 데이터 연결하기
+- 데이터 연결하기 전 배열 중 첫번째 영화 카드 구조는 기존 html 구조라 삭제 해주기
+>  $("#movie-list").html('');
+- 반복문에 있는 영화 카드 구조 내 영화 이미지, 타이틀 데이터 연결하기
+> 소스 코드// 백틱으로 감싸져 있는 html 구조 내에서 데이터 연결 시 ${movie_list[i].데이터 키값}
+>  <div class="col mb-4">
+>    <div class="card">
+>      <img src="${'https://image.tmdb.org/t/p/w500'+movie_list[i].poster_path}" class="card-img-top" alt="영화 이미지">
+>      <div class="card-body">
+>        <h5 class="card-title">${movie_list[i].original_title}</h5>
+>        <button type="button" class="btn btn-success btn-md" id="btn-review" onclick="openModal()">리뷰보기</button>
+>      </div>
+>      <div class="card-footer">
+>        <small class="text-muted">Last updated 3 mins ago</small>
+>      </div>
+>    </div>
+>  </div>
+* 이미지는 같은 폴더 내에 있는 이미지가 아니므로 경로를 추가적으로 적어줘야 한다.
+  https://developer.themoviedb.org/docs/image-basics 에서 확인 해 보면 이미지 데이터를 불러오기 전
+  https://image.tmdb.org/t/p/w500 + 데이터 값 형식으로 사용됨
